@@ -5,6 +5,7 @@ Components			|	Case
 Variables 			: lower camel case ( eg : lineCount )
 Functions 			: lower camel Case ( eg : printLines() )
 Class Names 		: upper camel case ( eg : GraphicsLibrary )
+Structures			: upper case 	   ( eg : COLOR )
 Constants 			: full caps with underscore for space 			( eg : LIMIT )
 Global Constants 	: same as constant but start with underscore 	( eg : _LIMIT )
 Global Variables	: same as variables but start with underscore 	( eg : _count ) 
