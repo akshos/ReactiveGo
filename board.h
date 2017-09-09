@@ -1,19 +1,18 @@
-#define _BOARD_HEIGHT 180
-#define _BOARD_WIDTH 180
-#define _CELL_COUNT 9
+#include "graphicsFunctions.h"
+#include <iostream>
 
-const unsigned short _CELL_WIDTH = _BOARD_WIDTH / _CELL_COUNT;
-const unsigned short _CELL_HEIGHT = _BOARD_HEIGHT / _CELL_COUNT;
+using namespace std;
+
+#define _BOARD_HEIGHT 800
+#define _BOARD_WIDTH 800
+#define _CELL_SPAN 10
+
+const unsigned short _CELL_COUNT = _CELL_SPAN * _CELL_SPAN;
+const unsigned short _CELL_WIDTH = _BOARD_WIDTH / _CELL_SPAN;
+const unsigned short _CELL_HEIGHT = _BOARD_HEIGHT / _CELL_SPAN;
 const unsigned short _CELL_HEIGHT_HALF = _CELL_HEIGHT / 2;
 const unsigned short _CELL_WIDTH_HALF = _CELL_WIDTH / 2;
-
-struct COLOR
-{
-	unsigned short red, green, blue;
-};
-
-const COLOR _BLACK = { 0, 0, 0 };
-const COLOR _WHITE = { 1, 1, 1 };
+const unsigned short _RADIUS = _CELL_WIDTH_HALF - 10;
 
 struct CELL
 {
@@ -26,9 +25,13 @@ struct CELL
 class Board
 {
 private :
-	CELL cells[_CELL_COUNT][_CELL_COUNT];
+	CELL cells[_CELL_SPAN][_CELL_SPAN];
+	LINE gridLines[_CELL_SPAN*2];
+	void initGrid();
 public :
 	Board();
+	void init();
+	void drawGrid();
 };
 	
 	
