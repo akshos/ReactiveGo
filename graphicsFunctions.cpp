@@ -1,5 +1,14 @@
 #include "graphicsFunctions.h"
 
+bool operator==(const COLOR &c1, const COLOR &c2)
+{
+	if( (c1.red == c2.red) && (c1.green == c2.green) && (c1.blue == c2.blue) )
+	{
+		return true;
+	}
+	return false;
+}
+
 void initDisplay(int argc, char **argv)
 {
 	glutInit(&argc, argv);
@@ -11,6 +20,7 @@ void initDisplay(int argc, char **argv)
 
 void initBoard() 
 {
+	cout << "Initializing board" << endl;
 	glClearColor(1.0, 1.0, 0.9, 0.0); 
 	glMatrixMode(GL_PROJECTION); 
 	glLoadIdentity();

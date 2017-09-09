@@ -1,7 +1,5 @@
 #include "graphicsFunctions.h"
-#include <iostream>
-
-using namespace std;
+#include "list.h"
 
 #define _BOARD_HEIGHT 800
 #define _BOARD_WIDTH 800
@@ -16,7 +14,7 @@ const unsigned short _RADIUS = _CELL_WIDTH_HALF - 10;
 
 struct CELL
 {
-	int xcenter, ycenter;
+	int xcenter, ycenter, index;
 	unsigned short count;
 	bool occupied;
 	COLOR color;
@@ -28,10 +26,13 @@ private :
 	CELL cells[_CELL_SPAN][_CELL_SPAN];
 	LINE gridLines[_CELL_SPAN*2];
 	void initGrid();
+	void drawGridLines();
+	LIST activeCells;
 public :
 	Board();
 	void init();
-	void drawGrid();
+	void renderGrid();
+	void fillCell( int row, int col, COLOR color );
 };
 	
 	

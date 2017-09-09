@@ -1,5 +1,8 @@
 #include <GL/glut.h>
 #include <math.h>
+#include <iostream>
+
+using namespace std;
 
 #define _LINE_WIDTH 1.0f
 #define _PI 3.14
@@ -23,6 +26,7 @@ struct LINE
 	POINT end;
 };
 
+bool operator==(const COLOR &c1, const COLOR &c2);
 void initDisplay(int argc, char **argv);
 void initBoard();
 void drawLine(POINT start, POINT end, COLOR color, float width);
