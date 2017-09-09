@@ -1,12 +1,12 @@
 #include "list.h"
 
-LIST::LIST()
+List::List()
 {
 	head = tail = NULL;
 	count = 0;
 }
 
-NODE* LIST::createNode(int row, int col, int index )
+NODE* List::createNode(int row, int col, int index )
 {
 	NODE *temp = new NODE;
 	temp->index = index;
@@ -17,7 +17,7 @@ NODE* LIST::createNode(int row, int col, int index )
 	return temp;
 }
 
-void LIST::insertNode( int row, int col, int index )
+void List::insertNode( int row, int col, int index )
 {
 	NODE *newNode = createNode(row, col, index);
 	newNode->prev = tail;
@@ -29,7 +29,7 @@ void LIST::insertNode( int row, int col, int index )
 	count++;
 }
 
-void LIST::deleteNode( int index )
+void List::deleteNode( int index )
 {
 	NODE *temp = head;
 	while( temp != NULL )
@@ -42,32 +42,45 @@ void LIST::deleteNode( int index )
 				head = temp->next;
 			if( temp == tail )
 				tail = temp->prev;
-			del temp;
+			delete temp;
 			count--;
 		}
 	}
 }
 
-NODE* LIST::getNode( int index )
+NODE* List::getNode( int index )
 {
 	NODE *temp = head;
 	while( temp != NULL )
 	{
-		if( temp->index == inex )
+		if( temp->index == index )
 		{
 			return temp;
 		}
 	}
 }
 
-bool LIST::isEmpty()
+bool List::isEmpty()
 {
 	if( head == NULL )
 		return true;
 	return false;
 }
 
-int LIST::getCount()
+int List::getCount()
 {
 	return count;
+}
+
+NODE* List::startSequential()
+{
+	currentNode = head;
+	return currentNode;
+}
+
+NODE* List::nextSequential()
+{
+	if(currentNode != NULL)
+		currentNode = currentNode->next;
+	return currentNode;
 }

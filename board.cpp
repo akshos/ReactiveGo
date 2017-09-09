@@ -1,11 +1,10 @@
 #include "board.h"
 
-
 Board::Board()
 {
 	CELL *cell;
 	int index = 0;
-	for( int i = 0; i < _CELL_SPAN; i++ )
+	for( int i = 0; i < _CELL_SPAN; i++ ) //initialize the cells matrix
 	{
 		for( int j = 0; j < _CELL_SPAN; j++ )
 		{
@@ -26,20 +25,26 @@ void Board::init()
 	initGrid();
 }
 
+void Board::drawCharacter( int x, int y, char ch )
+{
+	glRasterPos2i(x, y);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ch);
+}
 
+/*calculate grid line coordinates and store for future referance (gridLines)*/
 void Board::initGrid()
 {
 	POINT start, end;
 	LINE *line = gridLines;
 	cout << "Initializing grid lines" << endl;
-	//draw horizontal lines
+	//calculate horizontal lines
 	for( int y = _CELL_HEIGHT; y < _BOARD_HEIGHT; y += _CELL_HEIGHT )
 	{
 		line->start.x = 0; 			line->start.y = y;
 		line->end.x = _BOARD_WIDTH;	line->end.y = y;
 		line++;
 	}
-	//draw vertical lines
+	//calculate vertical lines
 	for( int x = _CELL_WIDTH; x < _BOARD_WIDTH; x += _CELL_WIDTH )
 	{
 		line->start.x = x;	line->start.y = 0;
@@ -48,6 +53,7 @@ void Board::initGrid()
 	}
 }
 
+/*draw grid lines using coordinates present in previously defines array (gridLines)*/
 void Board::drawGridLines()
 {
 	LINE *line = gridLines;
@@ -59,28 +65,47 @@ void Board::drawGridLines()
 		line++;
 	}
 	glutSwapBuffers();
-}	
-
-void BOARD::renderGrid()
-{
-	drawGridLines();
+	glFlush();
 }
 
-void BOARD::fillCell( int row, int col, COLOR color )
+/*render occupied cells on the screen*/
+void Board::drawActiveCells()
 {
-	CELL *cell = cells[row][col];
-	if( cell->color == __WHITE )
+	NODE* currentNode =	activeCells.startSequential();
+	CELL* currentCell;
+	cout << "Active cells: " << activeCells.getCount() << endl;
+	while( currentNode != NULL )
 	{
-		activeCells.insertNode(row, col, cell->index);
+		currentCell = &cells[currentNode->row][currentNode->col];
+		drawCircle(currentCell->xcenter, currentCell->ycenter, currentCell->color, _RADIUS);
+		currentNode = activeCells.nextSequential();
+	}
+	glutSwapBuffers();
+}
+
+/*render the board grid on the screen*/
+void Board::renderGrid() 
+{
+	drawGridLines();
+	drawActiveCells();
+}
+
+void Board::fillCell( int row, int col, COLOR color )
+{
+	CELL *cell = &cells[row][col];
+	if( cell->color == _WHITE ) //if the cell is unoccupied
+	{
+		activeCells.insertNode(row, col, cell->index); //add the cell to active list
 		cell->color = color;
 		cell->count = 1;
 	}
-	else if( cell->color == color )
+	else if( cell->color == color ) //if the cell is occupied by the same color
 	{
-		cell->count += 1;
+		cell->count += 1; //increase the count of the cell by 1
 	}
-	else
+	else //the cell is occupied by color of other player
 	{
 		cout << "Cell occupied by other player" << endl;
 	}
+	glutPostRedisplay();
 }

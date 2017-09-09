@@ -52,6 +52,6 @@ void drawCircle( int x, int y, COLOR color, float radius )
 	glColor3f(color.red, color.green, color.blue);
 	glBegin(GL_POLYGON);
 		for(double i = 0; i < 2 * _PI; i += _PI / 20) //<-- Change this Value
- 			glVertex2f((float)400 + (cos(i) * radius), (float)400 + (sin(i) * radius) );
+ 			glVertex2f((float)x + (cos(i) * radius), (float)y + (sin(i) * radius) );
 	glEnd();			
 }

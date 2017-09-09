@@ -27,7 +27,9 @@ private :
 	LINE gridLines[_CELL_SPAN*2];
 	void initGrid();
 	void drawGridLines();
-	LIST activeCells;
+	void drawActiveCells();
+	void drawCharacter( int x, int y, char c );
+	List activeCells;
 public :
 	Board();
 	void init();

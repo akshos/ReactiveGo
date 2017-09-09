@@ -1,3 +1,4 @@
+#include <stdlib.h>
 
 struct NODE
 {
@@ -8,18 +9,21 @@ struct NODE
 	NODE *prev;
 };
 
-class LIST
+class List
 {
 private:
 	NODE *head;
 	NODE *tail;
 	int count;
-	LIST* createNode();
+	NODE *currentNode;
+	NODE* createNode(int row, int col, int index );
 public:
-	LIST();
+	List();
 	bool isEmpty();
-	void insertNode( int row, int col, int indes );
+	void insertNode( int row, int col, int index );
 	void deleteNode( int index );
 	NODE* getNode( int index );
+	NODE* startSequential();
+	NODE* nextSequential();
 	int getCount();
-}
+};

@@ -8,6 +8,7 @@ int turn, row, col;
 void switchPlayer()
 {
 	turn = (turn+1)%2;
+	cout << "Switched to player: " << turn+1 << endl;
 }
 
 void calculateCellPos(int x, int y)
@@ -47,7 +48,7 @@ int main(int argc, char **argv)
 	glutDisplayFunc(game);
 	glutMouseFunc(onMouseClick);
 	player[0] = { 1, 0, 0 };
-	player[1] = { 0, 0, 0 };
+	player[1] = { 0, 0, 1 };
 	turn = 0;
 	glutMainLoop();
 	return 0;
