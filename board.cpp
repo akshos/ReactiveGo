@@ -114,7 +114,3 @@ int Board::fillCell( int row, int col, COLOR color )
 	}
 	glutPostRedisplay();
 }
-
-void Board::checkMaxOccupied(int row, int col, CELL *currentCell)
-{
-}
