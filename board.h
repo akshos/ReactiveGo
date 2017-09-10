@@ -1,6 +1,8 @@
 #include "graphicsFunctions.h"
 #include "list.h"
 
+#define _OCCUPIED 1
+
 #define _BOARD_HEIGHT 800
 #define _BOARD_WIDTH 800
 #define _CELL_SPAN 10
@@ -28,13 +30,14 @@ private :
 	void initGrid();
 	void drawGridLines();
 	void drawActiveCells();
-	void drawCharacter( int x, int y, char c );
+	void drawCellCount( int xcenter, int ycenter, int count);
+	void checkMaxOccupied(int row, int col, CELL *currentCell);
 	List activeCells;
 public :
 	Board();
 	void init();
 	void renderGrid();
-	void fillCell( int row, int col, COLOR color );
+	int fillCell( int row, int col, COLOR color );
 };
 	
 	

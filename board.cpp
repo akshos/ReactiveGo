@@ -10,10 +10,12 @@ Board::Board()
 		{
 			cell = &cells[i][j];
 			cell->color = _WHITE;
-			cell->xcenter = cell->ycenter = 0;
+			cell->xcenter = (_CELL_WIDTH * j) + _CELL_WIDTH_HALF;
+			cell->ycenter = (_CELL_HEIGHT * i) + _CELL_HEIGHT_HALF;
 			cell->count = 0;
 			cell->occupied = false;
 			cell->index = index++;
+			cout << "Row: " << i << " Col: " << j << " Index: " << index << " X: " << cell->xcenter << " Y: " << cell->ycenter << endl;
 		}
 	}
 	cout << "Cell count : " << index << endl;
@@ -25,10 +27,10 @@ void Board::init()
 	initGrid();
 }
 
-void Board::drawCharacter( int x, int y, char ch )
+void Board::drawCellCount(int xcenter, int ycenter, int count)
 {
-	glRasterPos2i(x, y);
-	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ch);
+	char ch = (char)((int)'0' + count);
+	drawCharacter( xcenter, ycenter, _WHITE, ch );
 }
 
 /*calculate grid line coordinates and store for future referance (gridLines)*/
@@ -73,11 +75,12 @@ void Board::drawActiveCells()
 {
 	NODE* currentNode =	activeCells.startSequential();
 	CELL* currentCell;
-	cout << "Active cells: " << activeCells.getCount() << endl;
+	cout << "Drawing active cells: " << activeCells.getCount() << endl;
 	while( currentNode != NULL )
 	{
 		currentCell = &cells[currentNode->row][currentNode->col];
 		drawCircle(currentCell->xcenter, currentCell->ycenter, currentCell->color, _RADIUS);
+		drawCellCount( currentCell->xcenter, currentCell->ycenter, currentCell->count );
 		currentNode = activeCells.nextSequential();
 	}
 	glutSwapBuffers();
@@ -90,7 +93,7 @@ void Board::renderGrid()
 	drawActiveCells();
 }
 
-void Board::fillCell( int row, int col, COLOR color )
+int Board::fillCell( int row, int col, COLOR color )
 {
 	CELL *cell = &cells[row][col];
 	if( cell->color == _WHITE ) //if the cell is unoccupied
@@ -102,10 +105,16 @@ void Board::fillCell( int row, int col, COLOR color )
 	else if( cell->color == color ) //if the cell is occupied by the same color
 	{
 		cell->count += 1; //increase the count of the cell by 1
+		checkMaxOccupied(row, col, cell);
 	}
 	else //the cell is occupied by color of other player
 	{
 		cout << "Cell occupied by other player" << endl;
+		return _OCCUPIED;
 	}
 	glutPostRedisplay();
+}
+
+void Board::checkMaxOccupied(int row, int col, CELL *currentCell)
+{
 }

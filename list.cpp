@@ -25,6 +25,10 @@ void List::insertNode( int row, int col, int index )
 	{
 		head = newNode;
 	}
+	else
+	{
+		tail->next = newNode;
+	}
 	tail = newNode;
 	count++;
 }

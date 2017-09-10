@@ -15,7 +15,7 @@ private:
 	NODE *head;
 	NODE *tail;
 	int count;
-	NODE *currentNode;
+	NODE* currentNode;
 	NODE* createNode(int row, int col, int index );
 public:
 	List();

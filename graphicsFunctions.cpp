@@ -55,3 +55,10 @@ void drawCircle( int x, int y, COLOR color, float radius )
  			glVertex2f((float)x + (cos(i) * radius), (float)y + (sin(i) * radius) );
 	glEnd();			
 }
+
+void drawCharacter( int x, int y, COLOR color, char ch )
+{
+	glColor3f( color.red, color.green, color.blue );
+	glRasterPos2i(x, y);
+	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ch);
+}

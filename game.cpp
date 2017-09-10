@@ -13,15 +13,16 @@ void switchPlayer()
 
 void calculateCellPos(int x, int y)
 {
-	row = ( y / _CELL_HEIGHT );
-	col = ( x / _CELL_WIDTH );
+	row = (int)( (_BOARD_HEIGHT - y) / _CELL_HEIGHT );
+	col = (int)( x / _CELL_WIDTH );
 	cout << "Cell position : ROW: " << row+1 << " COL: " << col+1 << endl;
 }
 
 void playerFillCell()
 {
-	board.fillCell( row, col, player[turn] );
-	switchPlayer();
+	int ret = board.fillCell( row, col, player[turn] );
+	if( ret != _OCCUPIED )
+		switchPlayer();
 }
 
 void game()
@@ -35,6 +36,7 @@ void onMouseClick( int button, int state, int x, int y )
 {
 	if( state == GLUT_DOWN )
 	{
+		cout << "---------------------------------------------------------------------------" << endl;
 		cout << "Mouse Position: X: " << x << " Y: " << y << endl;
 		calculateCellPos(x, y);
 		playerFillCell();
@@ -47,8 +49,8 @@ int main(int argc, char **argv)
 	board.init();
 	glutDisplayFunc(game);
 	glutMouseFunc(onMouseClick);
-	player[0] = { 1, 0, 0 };
-	player[1] = { 0, 0, 1 };
+	player[0] = _RED;
+	player[1] = _BLUE;
 	turn = 0;
 	glutMainLoop();
 	return 0;

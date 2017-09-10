@@ -14,6 +14,8 @@ struct COLOR
 
 const COLOR _BLACK = { 0.0f, 0.0f, 0.0f };
 const COLOR _WHITE = { 1.0f, 1.0f, 1.0f };
+const COLOR _RED = { 1.0f, 0.0f, 0.0f };
+const COLOR _BLUE = { 0.0f, 0.0f, 1.0f };
 
 struct POINT
 {
@@ -32,3 +34,4 @@ void initBoard();
 void drawLine(POINT start, POINT end, COLOR color, float width);
 void drawLine(int xa, int ya, int xb, int yb, COLOR color, float width);
 void drawCircle( int x, int y, COLOR color, float radius );
+void drawCharacter( int x, int y, COLOR color, char ch );
