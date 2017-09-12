@@ -1,3 +1,15 @@
+/*
+AUTHORS : 
+	Abhishek Suresh (202)
+	Akshay Venugopal(207)
+	Priyanka Rajeev (244)
+	Rachna Ramesh	(246)
+Type : Computer Graphics Assignment
+Program Name : Reactive GO
+File Name : board
+File Type : source
+*/
+
 #include "board.h"
 
 Board::Board()
@@ -21,10 +33,40 @@ Board::Board()
 			cell->occupied = false;
 			cell->expand = false;
 			cell->index = index++;
+			getPosition(i, j, cell);
 			cout << "Row: " << i << " Col: " << j << " Index: " << index << " X: " << cell->xcenter << " Y: " << cell->ycenter << endl;
 		}
 	}
 	cout << "Cell count : " << index << endl;
+}
+
+//calculate the cell position on the board and store
+void Board::getPosition(int row, int col, CELL *currentCell)
+{
+	unsigned short position;
+	bool corner = false;
+	//determine the position of the cell w:r:t the edges
+	if( row == 0 ) //cell is on the bottom edge
+		position = _BOTTOM_EDGE;
+	else if( row == _CELL_SPAN-1 ) //cell is on the top edge
+		position = _TOP_EDGE;
+	else
+		position = _MIDDLE; //cell is in between top and bottom
+	if( col == 0 ) //cell is on the left edge
+	{
+		if( position != 0 ) //if cell is already on top or bottom edge
+			corner = true; //cell is in a corver (top left or bottom left)
+		position += _LEFT_EDGE;
+	}
+	else if( col == _CELL_SPAN-1 ) //cell is on the right edge
+	{
+		if( position != 0 ) //if cell is already on top or bottom edge
+			corner = true; //cell is in a corver (top right or bottom right)
+	}
+	else //the cell is between left and right edges
+		position += _MIDDLE;
+	currentCell->corner = corner; //store the calculated positions
+	currentCell->position = position;
 }
 
 void Board::init()
@@ -43,12 +85,14 @@ void Board::setCurrentPlayer( unsigned short turn )
 	this->turn = turn;
 }
 
+//draw the cell capacity as character(number) at the center of the cell
 void Board::drawCellCount(int xcenter, int ycenter, int count)
 {
 	char ch = (char)((int)'0' + count);
 	drawCharacter( xcenter, ycenter, _WHITE, ch );
 }
 
+//returns true if there are pending cells to be expanded
 bool Board::isExpanding()
 {
 	return !expandCells.isEmpty();
@@ -113,6 +157,7 @@ void Board::renderGrid()
 	drawActiveCells();
 }
 
+//the cell is being filled by the player (due to mouse click)
 int Board::playerFillCell( int row, int col, int turn )
 {
 
@@ -121,6 +166,7 @@ int Board::playerFillCell( int row, int col, int turn )
 	return flag;
 }
 
+//fill the cell at specified row and col with the specified color
 int Board::fillCell( int row, int col, COLOR color, bool takeOver)
 {
 	CELL *cell = &cells[row][col];
@@ -135,14 +181,14 @@ int Board::fillCell( int row, int col, COLOR color, bool takeOver)
 	else if( cell->color == color ) //if the cell is occupied by the same color
 	{
 		cell->count += 1; //increase the count of the cell by 1
-		checkMaxOccupied(row, col, cell);
+		checkMaxOccupied(row, col, cell); //check is cell capacity is reached
 	}
 	else if( takeOver == true )
 	{
 		cell->color = color;
 		cell->count += 1;
 		cell->player = turn;
-		checkMaxOccupied(row, col, cell);
+		checkMaxOccupied(row, col, cell); //check is cell capacity is reached
 	}
 	else //the cell is occupied by color of other player
 	{
@@ -152,99 +198,75 @@ int Board::fillCell( int row, int col, COLOR color, bool takeOver)
 	
 }
 
+//remove the cell from the activeCells list and reset its parameters
 void Board::unoccupyCell( CELL *cell )
 {
 	cell->occupied = false;
 	cell->count = 0;
 	cell->player = -1;
 	cell->color = _WHITE;
-	cout << "Deleting node " << endl;
-	activeCells.deleteNode(cell->index);
-	cout << "Node deleted " << endl;
+	//cout << "Deleting node " << endl;
+	activeCells.deleteNode(cell->index); //delete from the list
+	//cout << "Node deleted " << endl;
 }
 
+//check if the cell capacity is reached based on its position and set to expand
 void Board::checkMaxOccupied(int row, int col, CELL *currentCell)
 {
-	unsigned short position;
-	bool corner = false;
-	//determine the position of the cell w:r:t the edges
-	if( row == 0 )
-		position = _BOTTOM_EDGE;
-	else if( row == _CELL_SPAN-1 )
-		position = _TOP_EDGE;
-	else
-		position = _MIDDLE;
-	if( col == 0 )
+	if( currentCell->position != _MIDDLE ) //if the cell is not in the middle
 	{
-		if( position != 0 )
-			corner = true;
-		position += _LEFT_EDGE;
-	}
-	else if( col == _CELL_SPAN-1 )
-	{
-		if( position != 0 )
-			corner = true;
-		position += _RIGHT_EDGE;
-	}
-	else
-		position += _MIDDLE;
-	
-	if( position != _MIDDLE )
-	{
-		if( corner && (currentCell->count == 2) )
+		if( currentCell->corner && (currentCell->count == 2) ) //if the cell is at a corner
 		{
-			currentCell->expand = true;
+			currentCell->expand = true; //set the cell to be expanded
 			expandCells.insertNode(row, col, currentCell->index);
 		}
-		else if( currentCell->count == 3 )
+		else if( currentCell->count == 3 ) //if the cell is at an edge
 		{
-			currentCell->expand = true;
+			currentCell->expand = true; //set the cell to be expanded
 			expandCells.insertNode(row, col, currentCell->index);
 		}
 	}
-	else if( currentCell->count == 4 )
+	else if( currentCell->count == 4 ) //if the cell is somewhere in middle
 	{
-		currentCell->expand = true;
+		currentCell->expand = true; //set the cell to be expanded
 		expandCells.insertNode(row, col, currentCell->index);
 	}
 }
-			
+
+
+//check if there are cells to be expanded			
 void Board::checkAndExpand()
 {
-	if( expandCells.isEmpty() )
+	if( expandCells.isEmpty() ) //no cell pending to be expanded
 		return;
-	unsigned short up, down, left, right, position, row, col;
-	up = down = left = right = 0;
-	NODE *current = expandCells.removeFront();
-	cout << "Expanding cell: " << current->index << " Row: " << current->row << " Col: " << current->col << endl;
+	unsigned short position, row, col;
+	NODE *current = expandCells.removeFront(); //retrieve the first cell to expand and remove from list
 	row = current->row;
 	col = current->col;
+	cout << "Expanding cell: " << current->index << " Row: " << row << " Col: " << col << endl;
 	CELL *cell = &cells[row][col];
-	position = cell->position;
-	if( position ^ _LEFT_EDGE ) //not on left edge
+	position = cell->position; 
+	//expand to adjacents cells based on position on board
+	if( !(position & _LEFT_EDGE) ) //not on left edge
 	{
-		left = _STEP;
-		fillCell(row, col-1, cell->color, true);
+		fillCell(row, col-1, cell->color, true); //expand to left cell
 	}
-	if( position ^ _RIGHT_EDGE ) //not on right edge
+	if( !(position & _RIGHT_EDGE) ) //not on right edge
 	{
-		right = _STEP;
-		fillCell(row, col+1, cell->color, true);
+		fillCell(row, col+1, cell->color, true); //expand to right cell
 	}
-	if( position ^ _TOP_EDGE ) //not on top edge
+	if( !(position & _TOP_EDGE) ) //not on top edge
 	{
-		up = _STEP;
-		fillCell(row+1, col, cell->color, true);
+		fillCell(row+1, col, cell->color, true); //expand to top cell
 	}
-	if( position ^ _BOTTOM_EDGE ) //not on bottom edge
+	if( !(position & _BOTTOM_EDGE) ) //not on bottom edge
 	{
-		down = _STEP;
-		fillCell(row-1, col, cell->color, true);
+		fillCell(row-1, col, cell->color, true); //expand to bottom cell
 	}
 	cout << "Unoccupying cell: " << current->index << endl;
-	unoccupyCell(cell);
-	delete current;
-	glutPostRedisplay();
+	unoccupyCell(cell); //unoccupy the expanded cell
+	delete current; 
+	glutPostRedisplay(); //call to render the board
 }
 
 

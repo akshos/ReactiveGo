@@ -1,3 +1,15 @@
+/*
+AUTHORS : 
+	Abhishek Suresh (202)
+	Akshay Venugopal(207)
+	Priyanka Rajeev (244)
+	Rachna Ramesh	(246)
+Type : Computer Graphics Assignment
+Program Name : Reactive GO
+File Name : graphicsFunctions
+File Type : source
+*/
+
 #include "graphicsFunctions.h"
 
 bool operator==(const COLOR &c1, const COLOR &c2)
@@ -9,6 +21,7 @@ bool operator==(const COLOR &c1, const COLOR &c2)
 	return false;
 }
 
+/*initialize the display window*/
 void initDisplay(int argc, char **argv)
 {
 	glutInit(&argc, argv);
@@ -18,6 +31,7 @@ void initDisplay(int argc, char **argv)
 	glutCreateWindow("Reactive GO");
 }
 
+/*initialize the board*/
 void initBoard() 
 {
 	cout << "Initializing board" << endl;
@@ -27,6 +41,7 @@ void initBoard()
 	gluOrtho2D(0, 800, 0, 800);
 }
 
+/*draw a line between two POINTS*/
 void drawLine(POINT start, POINT end, COLOR color, float width)
 {
 	glColor3f(color.red, color.green, color.blue); 
@@ -37,6 +52,7 @@ void drawLine(POINT start, POINT end, COLOR color, float width)
 	glEnd();
 }
 
+/*draw a line between (xa,ya) and (xb,yb)*/
 void drawLine(int xa, int ya, int xb, int yb, COLOR color, float width)
 {
 	glColor3f(color.red, color.green, color.blue); 
@@ -47,6 +63,7 @@ void drawLine(int xa, int ya, int xb, int yb, COLOR color, float width)
 	glEnd();
 }
 
+/*draw a filled circle with specifeid color, radius and center*/
 void drawCircle( int x, int y, COLOR color, float radius )
 {
 	glColor3f(color.red, color.green, color.blue);
@@ -56,6 +73,7 @@ void drawCircle( int x, int y, COLOR color, float radius )
 	glEnd();			
 }
 
+/*draw the specified character on the screen*/
 void drawCharacter( int x, int y, COLOR color, char ch )
 {
 	glColor3f( color.red, color.green, color.blue );

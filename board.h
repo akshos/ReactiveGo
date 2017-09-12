@@ -1,5 +1,18 @@
+/*
+AUTHORS : 
+	Abhishek Suresh (202)
+	Akshay Venugopal(207)
+	Priyanka Rajeev (244)
+	Rachna Ramesh	(246)
+Type : Computer Graphics Assignment
+Program Name : Reactive GO
+File Name : board
+File Type : header
+*/
+
 #include "graphicsFunctions.h"
 #include "list.h"
+#include <unistd.h>
 
 #define _OCCUPIED 1
 #define _TOP_EDGE 0x8
@@ -30,7 +43,7 @@ struct CELL
 	unsigned short count;
 	unsigned short position;
 	short player;
-	bool occupied, expand;
+	bool occupied, expand, corner;
 	COLOR color;
 };
 
@@ -49,22 +62,23 @@ private :
 	List expandCells;
 	unsigned short turn;
 	PLAYER player[2];
-	void initGrid();
-	void drawGridLines();
-	void drawActiveCells();
-	void drawCellCount( int xcenter, int ycenter, int count);
-	void checkMaxOccupied(int row, int col, CELL *currentCell);
-	int fillCell( int row, int col, COLOR color, bool takeOver = false );
-	void unoccupyCell( CELL *cell );
+	void initGrid(); /*calculate grid line coordinates and store for future referance (gridLines)*/
+	void getPosition(int row, int col, CELL *currentCell); //calculate the cell position on the board and store
+	void drawGridLines(); /*draw grid lines using coordinates present in previously defines array (gridLines)*/
+	void drawActiveCells(); /*render occupied cells on the screen*/
+	void drawCellCount( int xcenter, int ycenter, int count); //draw the cell capacity as character(number) at the center of the cell
+	void checkMaxOccupied(int row, int col, CELL *currentCell); //check if the cell capacity is reached based on its position and set to expand
+	int fillCell( int row, int col, COLOR color, bool takeOver = false ); //fill the cell at specified row and col with the specified color
+	void unoccupyCell( CELL *cell ); //remove the cell from the activeCells list and reset its parameters
 public :
 	Board();
 	void init();
-	void renderGrid();
-	bool isExpanding();
-	void checkAndExpand();
+	void renderGrid(); /*render the board grid on the screen*/
+	bool isExpanding(); //returns true if there are pending cells to be expanded
+	void checkAndExpand(); //check if there are cells to be expanded
 	void setPlayerColor( unsigned short turn, COLOR color );
 	void setCurrentPlayer( unsigned short turn );
-	int playerFillCell( int row, int col, int turn );
+	int playerFillCell( int row, int col, int turn ); //the cell is being filled by the player (due to mouse click)
 };
 	
 	

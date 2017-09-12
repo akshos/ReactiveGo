@@ -1,3 +1,15 @@
+/*
+AUTHORS : 
+	Abhishek Suresh (202)
+	Akshay Venugopal(207)
+	Priyanka Rajeev (244)
+	Rachna Ramesh	(246)
+Type : Computer Graphics Assignment
+Program Name : Reactive GO
+File Name : game
+File Type :	source
+*/
+
 #include "board.h"
 
 Board board;
