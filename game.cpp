@@ -14,7 +14,8 @@ File Type :	source
 
 Board board;
 
-int turn, row, col;
+int turn;
+int tempRow, tempCol;
 
 void switchPlayer()
 {
@@ -23,14 +24,13 @@ void switchPlayer()
 	cout << "Switched to player: " << turn+1 << endl;
 }
 
-void calculateCellPos(int x, int y)
+void calculateCellPos(int x, int y, int &row, int &col)
 {
 	row = (int)( (_BOARD_HEIGHT - y) / _CELL_HEIGHT );
 	col = (int)( x / _CELL_WIDTH );
-	cout << "Cell position : ROW: " << row+1 << " COL: " << col+1 << endl;
 }
 
-void playerFillCell()
+void playerFillCell(int row, int col)
 {
 	int ret = board.playerFillCell( row, col, turn );
 	if( ret != _OCCUPIED )
@@ -57,9 +57,23 @@ void onMouseClick( int button, int state, int x, int y )
 		cout << "Mouse Position: X: " << x << " Y: " << y << endl;
 		if( !board.isExpanding() )
 		{
-			calculateCellPos(x, y);
-			playerFillCell();
+			int row, col;
+			calculateCellPos(x, y, row, col);
+			cout << "Cell position : ROW: " << row+1 << " COL: " << col+1 << endl;
+			playerFillCell(row, col);
 		}
+	}
+}
+
+void onMouseMove( int x, int y )
+{
+	int newRow, newCol;
+	calculateCellPos(x, y, newRow, newCol);
+	if( (newRow != tempRow) || (newCol != tempCol) )
+	{
+		tempRow = newRow;
+		tempCol = newCol;
+		board.tempFillCell(tempRow, tempCol);
 	}
 }
 
@@ -70,9 +84,11 @@ int main(int argc, char **argv)
 	glutDisplayFunc(game);
 	glutIdleFunc(checkExpand);
 	glutMouseFunc(onMouseClick);
+	glutPassiveMotionFunc(onMouseMove);
 	board.setPlayerColor( 0, _RED );
 	board.setPlayerColor( 1, _BLUE );
 	turn = 0;
+	tempRow = tempCol = -1;
 	glutMainLoop();
 	return 0;
 }

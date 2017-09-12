@@ -150,11 +150,21 @@ void Board::drawActiveCells()
 	glutSwapBuffers();
 }
 
+void Board::drawTempCell()
+{
+	if( tempCell != NULL )
+	{
+		drawCircle(tempCell->xcenter, tempCell->ycenter, player[turn].color, _RADIUS);
+	}
+	glutSwapBuffers();
+}
+
 /*render the board grid on the screen*/
 void Board::renderGrid() 
 {
 	drawGridLines();
 	drawActiveCells();
+	drawTempCell();
 }
 
 //the cell is being filled by the player (due to mouse click)
@@ -163,6 +173,7 @@ int Board::playerFillCell( int row, int col, int turn )
 
 	int flag = fillCell(row, col, player[turn].color);
 	glutPostRedisplay();
+	tempCell = NULL;
 	return flag;
 }
 
@@ -268,6 +279,24 @@ void Board::checkAndExpand()
 	delete current; 
 	glutPostRedisplay(); //call to render the board
 }
+
+void Board::tempFillCell( int row, int col )
+{
+	CELL *cell = &cells[row][col];
+	if( !cell->occupied )
+	{
+		tempCell = cell;
+	}
+	else
+	{
+		tempCell	 = NULL;
+	}
+	glutPostRedisplay();
+}
+
+
+
+
 
 
 

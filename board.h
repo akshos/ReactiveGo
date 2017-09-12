@@ -57,6 +57,7 @@ class Board
 {
 private :
 	CELL cells[_CELL_SPAN][_CELL_SPAN];
+	CELL *tempCell;
 	LINE gridLines[_CELL_SPAN*2];
 	List activeCells;
 	List expandCells;
@@ -66,6 +67,7 @@ private :
 	void getPosition(int row, int col, CELL *currentCell); //calculate the cell position on the board and store
 	void drawGridLines(); /*draw grid lines using coordinates present in previously defines array (gridLines)*/
 	void drawActiveCells(); /*render occupied cells on the screen*/
+	void drawTempCell();
 	void drawCellCount( int xcenter, int ycenter, int count); //draw the cell capacity as character(number) at the center of the cell
 	void checkMaxOccupied(int row, int col, CELL *currentCell); //check if the cell capacity is reached based on its position and set to expand
 	int fillCell( int row, int col, COLOR color, bool takeOver = false ); //fill the cell at specified row and col with the specified color
@@ -79,6 +81,7 @@ public :
 	void setPlayerColor( unsigned short turn, COLOR color );
 	void setCurrentPlayer( unsigned short turn );
 	int playerFillCell( int row, int col, int turn ); //the cell is being filled by the player (due to mouse click)
+	void tempFillCell( int row, int col );
 };
 	
 	
