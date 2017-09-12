@@ -62,6 +62,7 @@ void Board::getPosition(int row, int col, CELL *currentCell)
 	{
 		if( position != 0 ) //if cell is already on top or bottom edge
 			corner = true; //cell is in a corver (top right or bottom right)
+		position += _RIGHT_EDGE;
 	}
 	else //the cell is between left and right edges
 		position += _MIDDLE;
