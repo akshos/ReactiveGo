@@ -40,14 +40,17 @@ void List::deleteNode( int index )
 	{
 		if( temp->index == index )
 		{
-			(temp->prev)->next = temp->next;
-			(temp->next)->prev = temp->prev;
+			if( temp->prev != NULL )
+				(temp->prev)->next = temp->next;
+			if( temp->next != NULL )
+				(temp->next)->prev = temp->prev;
 			if( temp == head )
 				head = temp->next;
 			if( temp == tail )
 				tail = temp->prev;
 			delete temp;
 			count--;
+			return;
 		}
 	}
 }
@@ -62,6 +65,7 @@ NODE* List::getNode( int index )
 			return temp;
 		}
 	}
+	return NULL;
 }
 
 bool List::isEmpty()
@@ -87,4 +91,16 @@ NODE* List::nextSequential()
 	if(currentNode != NULL)
 		currentNode = currentNode->next;
 	return currentNode;
+}
+
+NODE* List::removeFront()
+{
+	NODE* tmp = head;
+	if( head != NULL )
+	{
+		head = head->next;
+		if( head != NULL )
+			head->prev = NULL;
+	}
+	return tmp;
 }

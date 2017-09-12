@@ -25,5 +25,6 @@ public:
 	NODE* getNode( int index );
 	NODE* startSequential();
 	NODE* nextSequential();
+	NODE* removeFront();
 	int getCount();
 };

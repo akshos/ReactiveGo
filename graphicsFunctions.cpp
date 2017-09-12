@@ -12,7 +12,7 @@ bool operator==(const COLOR &c1, const COLOR &c2)
 void initDisplay(int argc, char **argv)
 {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_DOUBLE | GLUT_RGBA);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(800, 800);
 	glutCreateWindow("Reactive GO");
@@ -21,7 +21,7 @@ void initDisplay(int argc, char **argv)
 void initBoard() 
 {
 	cout << "Initializing board" << endl;
-	glClearColor(1.0, 1.0, 0.9, 0.0); 
+	glClearColor(_BACKGROUND.red, _BACKGROUND.green, _BACKGROUND.blue, 0.0); 
 	glMatrixMode(GL_PROJECTION); 
 	glLoadIdentity();
 	gluOrtho2D(0, 800, 0, 800);
@@ -51,7 +51,7 @@ void drawCircle( int x, int y, COLOR color, float radius )
 {
 	glColor3f(color.red, color.green, color.blue);
 	glBegin(GL_POLYGON);
-		for(double i = 0; i < 2 * _PI; i += _PI / 20) //<-- Change this Value
+		for(double i = 0; i < 2 * _PI; i += _PI / 10) //<-- Change this Value
  			glVertex2f((float)x + (cos(i) * radius), (float)y + (sin(i) * radius) );
 	glEnd();			
 }

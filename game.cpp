@@ -2,12 +2,12 @@
 
 Board board;
 
-COLOR player[2];
 int turn, row, col;
 
 void switchPlayer()
 {
 	turn = (turn+1)%2;
+	board.setCurrentPlayer(turn);
 	cout << "Switched to player: " << turn+1 << endl;
 }
 
@@ -20,7 +20,7 @@ void calculateCellPos(int x, int y)
 
 void playerFillCell()
 {
-	int ret = board.fillCell( row, col, player[turn] );
+	int ret = board.playerFillCell( row, col, turn );
 	if( ret != _OCCUPIED )
 		switchPlayer();
 }
@@ -32,14 +32,22 @@ void game()
 	glFlush();
 }
 
+void checkExpand()
+{
+	board.checkAndExpand();
+}
+
 void onMouseClick( int button, int state, int x, int y )
 {
 	if( state == GLUT_DOWN )
 	{
 		cout << "---------------------------------------------------------------------------" << endl;
 		cout << "Mouse Position: X: " << x << " Y: " << y << endl;
-		calculateCellPos(x, y);
-		playerFillCell();
+		if( !board.isExpanding() )
+		{
+			calculateCellPos(x, y);
+			playerFillCell();
+		}
 	}
 }
 
@@ -48,9 +56,10 @@ int main(int argc, char **argv)
 	initDisplay(argc, argv);
 	board.init();
 	glutDisplayFunc(game);
+	glutIdleFunc(checkExpand);
 	glutMouseFunc(onMouseClick);
-	player[0] = _RED;
-	player[1] = _BLUE;
+	board.setPlayerColor( 0, _RED );
+	board.setPlayerColor( 1, _BLUE );
 	turn = 0;
 	glutMainLoop();
 	return 0;

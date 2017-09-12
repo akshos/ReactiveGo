@@ -16,6 +16,7 @@ const COLOR _BLACK = { 0.0f, 0.0f, 0.0f };
 const COLOR _WHITE = { 1.0f, 1.0f, 1.0f };
 const COLOR _RED = { 1.0f, 0.0f, 0.0f };
 const COLOR _BLUE = { 0.0f, 0.0f, 1.0f };
+const COLOR _BACKGROUND = { 1.0f, 1.0f, 0.9f };
 
 struct POINT
 {
