@@ -52,6 +52,7 @@ void List::deleteNode( int index )
 			count--;
 			return;
 		}
+		temp = temp->next;
 	}
 }
 
